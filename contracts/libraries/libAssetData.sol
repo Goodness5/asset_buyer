@@ -12,6 +12,7 @@ struct Assetdetails {
     string AssetCategory;
 }
 
+
 struct AssetData {
     uint256 assetId;
     mapping (uint256 => Assetdetails) Assetdetail;
