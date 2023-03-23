@@ -4,12 +4,12 @@ pragma solidity ^0.8.17;
 import {libAssetbuyer} from "../libraries/libAssetbuyer.sol";
 import {Assetpricing} from "../libraries/libAssetpricing.sol";
 import {OwnershipFacet} from "./OwnershipFacet.sol";
-import "../../node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract Asset {
-    constructor() {
-        Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
-        }
+contract ASSET {
+    // constructor() {
+    //     Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
+    //     }
     function stageAsset(
         string memory assetName,
         uint256 assetPrice,

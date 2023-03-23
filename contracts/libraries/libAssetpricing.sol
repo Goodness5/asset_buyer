@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import { AssetData, Assetdetails } from "./libAssetData.sol";
-import "../../node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 import "../../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol/";
 
