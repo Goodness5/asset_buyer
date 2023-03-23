@@ -61,7 +61,7 @@ library Assetpricing {
      
 
 
-    function getLatestPrice (AggregatorV3Interface pricefeed) public view returns (uint80 roundID, int price,
+    function getLatestPrice (AggregatorV3Interface pricefeed) internal view returns (uint80 roundID, int price,
         uint  startedAt,uint timeStamp,uint80 answeredInRound) {
         (roundID, price,startedAt,timeStamp,answeredInRound) = pricefeed.latestRoundData();
     } 

@@ -43,6 +43,11 @@ contract Asset {
         Assetpricing.getprice(paymentname);
     }
 
+    function priceInUsersToken(string memory _tokenName, uint256 assetId) external view{
+        Assetpricing.calcPriceInToken(_tokenName, assetId);
+        
+    }
+
 
     
 }
