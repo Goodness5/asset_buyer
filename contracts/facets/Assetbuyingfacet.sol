@@ -36,10 +36,11 @@ contract Asset {
     }
 
     function addpricefeeed(string memory paymentname, AggregatorV3Interface pricefeedAdddess) external {
-        Assetpricing.addpricefeeed(
-            paymentname, pricefeedAdddess
-        );
+        Assetpricing.addpricefeeed(paymentname, pricefeedAdddess);
         
+    }
+    function getprice(string memory paymentname) external view{
+        Assetpricing.getprice(paymentname);
     }
 
 
