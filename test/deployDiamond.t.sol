@@ -5,7 +5,7 @@ import "../contracts/interfaces/IDiamondCut.sol";
 import "../contracts/facets/DiamondCutFacet.sol";
 import "../contracts/facets/DiamondLoupeFacet.sol";
 import "../contracts/facets/OwnershipFacet.sol";
-import "../../lib/forge-std/src/Test.sol";
+import "../lib/forge-std/src/Test.sol";
 import "../contracts/Diamond.sol";
 
 contract DiamondDeployer is Test, IDiamondCut {

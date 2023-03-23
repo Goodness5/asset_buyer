@@ -32,6 +32,7 @@ event AssetStaged(address _owner, string category);
             newcategory = assetData.Assetdetail[assetId].AssetCategory;
             newcategory = "ERC20";
         }
+        assetOwner = msg.sender;
         assetData.Assetdetail[assetId] = Assetdetails({
             AssetName: assetName,
             AssetPrice: assetPrice,
