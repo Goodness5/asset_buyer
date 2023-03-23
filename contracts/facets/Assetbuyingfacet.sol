@@ -9,7 +9,7 @@ import "../../node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3
 contract Asset {
     constructor() {
         Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
-    }
+        }
     function stageAsset(
         string memory assetName,
         uint256 assetPrice,
