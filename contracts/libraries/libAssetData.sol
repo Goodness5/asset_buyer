@@ -12,6 +12,7 @@ struct Assetdetails {
     address buyer;
     string AssetCategory;
     uint256 nftId;
+    bool isNFT;
 }
 struct payment {
     AggregatorV3Interface paymentTokenfeed;
