@@ -15,6 +15,6 @@ library libAssetbuyer {
 
       function _stageAsset() internal {
         AssetData storage ds =AssetSlot();
-        
+        ds.assetId +=1;
       }
 }
