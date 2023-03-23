@@ -11,10 +11,12 @@ struct Assetdetails {
     bool Assetpurchased;
     address buyer;
     string AssetCategory;
+    uint256 nftId;
 }
 struct payment {
-    AggregatorV3Interface paymentToken;
+    AggregatorV3Interface paymentTokenfeed;
     int price;
+    address paymentTokenAddress;
 
 }
 

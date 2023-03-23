@@ -4,7 +4,7 @@ pragma solidity ^0.8.17;
 import { AssetData, Assetdetails } from "./libAssetData.sol";
 import "../../node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-import "../../lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol/";
+import "../../lib/openzeppelin-contracts/contracts/token/ERC20/extensions/IERC20Metadata.sol/";
 
 
 
@@ -16,9 +16,10 @@ library Assetpricing {
         AssetData storage ds = AssetSlot();
 
         ds.paymentmethods.push(paymentname);
-        ds.paymentmethod[paymentname].paymentToken = pricefeedAdddess;
+        ds.paymentmethod[paymentname].paymentTokenfeed = pricefeedAdddess;
        AggregatorV3Interface pricefeed = AggregatorV3Interface(pricefeedAdddess);
         (, int Price, , , ) = getLatestPrice(pricefeed);
+        // token price in usd
         Price = ds.paymentmethod[paymentname].price;
 
     }
@@ -33,21 +34,31 @@ library Assetpricing {
             revert("payment method not found");
         }
     }
+    // returns price in usd
         return _price;
 }
 
 
-      function getAssetDetails(uint256 assetId) public view returns (Assetdetails memory) {
-        AssetData storage assetData = AssetSlot();
-        require(assetData.Assetdetail[assetId].AssetAddress != address(0), "Asset does not exist");
-        return assetData.Assetdetail[assetId];
-    }
+       function calcPriceInToken(string memory _tokenName, uint256 assetId) view internal returns(int amountToPay){
+    AssetData storage ds = AssetSlot();
 
-  function isAssetPurchased(uint256 assetId) public view returns (bool) {
-        AssetData storage assetData = AssetSlot();
-        require(assetData.Assetdetail[assetId].AssetAddress != address(0), "Asset does not exist");
-        return assetData.Assetdetail[assetId].Assetpurchased;
-    }
+    int paymentPriceInUsd = getprice(_tokenName);
+    // gets eth price in usd
+    AggregatorV3Interface ethpricefeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+    (, int ethPrice, , , ) = getLatestPrice(ethpricefeed);
+    int256 assetPriceInUsd = int256(ethPrice) * int256(ds.Assetdetail[assetId].AssetPrice);
+    //get the price in usd of the token user wants to pay
+
+    address paymentTokenAddress = ds.paymentmethod[_tokenName].paymentTokenAddress;
+    uint8 paymentTokenDecimals = IERC20Metadata(paymentTokenAddress).decimals();
+    int256 assetPriceInPaymentToken = (assetPriceInUsd * int256(10 ** paymentTokenDecimals)) / int256(paymentPriceInUsd);
+    int256 paymentAmount = assetPriceInPaymentToken * paymentPriceInUsd /int256( 10 ** paymentTokenDecimals);
+    amountToPay = paymentAmount;
+
+}
+
+
+     
 
 
     function getLatestPrice (AggregatorV3Interface pricefeed) public view returns (uint80 roundID, int price,
