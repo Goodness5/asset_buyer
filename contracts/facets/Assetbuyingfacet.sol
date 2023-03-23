@@ -2,6 +2,8 @@
 pragma solidity ^0.8.17;
 
 import {libAssetbuyer} from "../libraries/libAssetbuyer.sol";
+import {Assetpricing} from "../libraries/libAssetpricing.sol";
+import "../../node_modules/@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract Asset {
     constructor() {
@@ -32,7 +34,13 @@ contract Asset {
     function isAssetPurchased(uint256 assetId) external view{
         libAssetbuyer.isAssetPurchased(assetId);
     }
-    
+
+    function addpricefeeed(string memory paymentname, AggregatorV3Interface pricefeedAdddess) external {
+        Assetpricing.addpricefeeed(
+            paymentname, pricefeedAdddess
+        );
+        
+    }
 
 
     
