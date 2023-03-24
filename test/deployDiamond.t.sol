@@ -7,6 +7,7 @@ import "../contracts/facets/DiamondLoupeFacet.sol";
 import "../contracts/facets/OwnershipFacet.sol";
 import "../lib/forge-std/src/Test.sol";
 import "../contracts/Diamond.sol";
+import "../contracts/facets/Assetbuyingfacet.sol";
 
 contract DiamondDeployer is Test, IDiamondCut {
     //contract types of facets to be deployed
@@ -14,6 +15,7 @@ contract DiamondDeployer is Test, IDiamondCut {
     DiamondCutFacet dCutFacet;
     DiamondLoupeFacet dLoupe;
     OwnershipFacet ownerF;
+    AssetFacet AssetF;
 
     function testDeployDiamond() public {
         //deploy facets
@@ -21,6 +23,7 @@ contract DiamondDeployer is Test, IDiamondCut {
         diamond = new Diamond(address(this), address(dCutFacet));
         dLoupe = new DiamondLoupeFacet();
         ownerF = new OwnershipFacet();
+        AssetF  = new AssetFacet();
 
         //upgrade diamond with facets
 
@@ -67,4 +70,17 @@ contract DiamondDeployer is Test, IDiamondCut {
         address _init,
         bytes calldata _calldata
     ) external override {}
+
+
+       function testAssetFacet() public {
+        testDeployDiamond();
+        FacetCut[] memory slice = new FacetCut[](1);
+        slice[0] = ( FacetCut({
+            facetAddress: address(AssetF),
+            action: FacetCutAction.Add,
+            functionSelectors: generateSelectors("AuctionFacet")
+        }));
+        IDiamondCut(address(diamond)).diamondCut(slice, address(0), "");
+         DiamondLoupeFacet(address(diamond)).facetAddresses();
+    }
 }

@@ -6,7 +6,7 @@ import {Assetpricing} from "../libraries/libAssetpricing.sol";
 import {OwnershipFacet} from "./OwnershipFacet.sol";
 import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract ASSET {
+contract AssetFacet {
     // constructor() {
     //     Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
     //     }

@@ -94,6 +94,31 @@ event AssetStaged(address _owner, string category);
     }
 
 
+        function withdraweth(uint256 _value) internal returns (bool success) {
+            // AssetData storage ds = AssetSlot();
+     require(address(this).balance >= _value, "insufficient balance");
+     address payable reciepient = payable(msg.sender);
+     success = reciepient.send(_value);
+     require(success, "withdrawal failed");
+    }
+
+    function withdrawERC20token(address _tokenaddress) internal returns (bool success) {
+            // AssetData storage ds = AssetSlot();
+            uint amt = IERC20(_tokenaddress).balanceOf(address(this));
+            require(amt > 0, "insuficient balance");
+            success = IERC20(_tokenaddress).transfer(msg.sender, amt);
+            return success;
+      }
+    function withdrawERC721token(address _tokenaddress, uint _tokenid) internal returns (bool success) {
+        // AssetData storage ds = AssetSlot();
+        address owner = IERC721(_tokenaddress).ownerOf(_tokenid);
+        require(owner==address(this), "token not available");
+        IERC721(_tokenaddress).transferFrom(address(this), msg.sender, _tokenid);
+        success = true;
+        return success;
+    }
+
+
     function AssetSlot() internal pure returns(AssetData storage ds) {
         assembly {
             ds.slot := 0

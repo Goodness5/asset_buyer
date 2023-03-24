@@ -8,7 +8,7 @@ import "../contracts/facets/Assetbuyingfacet.sol";
 import "../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract AssetbuyerTest is Test {
-        ASSET public asset;
+        AssetFacet public asset;
         NFT public nft;
 
         address tester1 = mkaddr("tester1");
