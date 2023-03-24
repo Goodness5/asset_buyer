@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "../lib/forge-std/src/Test.sol";
 import "../Mock/NFT.sol";
+import "../lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol";
 import "../contracts/facets/Assetbuyingfacet.sol";
 import "../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
@@ -12,30 +13,44 @@ contract AssetbuyerTest is Test {
 
         address tester1 = mkaddr("tester1");
         address assetowner = mkaddr("assetowner");
-   function setup() public {
+   function setUp() public {
         asset = new ASSET();
-        vm.prank(tester1);
+        vm.startPrank(tester1);
         nft = new NFT();
+        vm.stopPrank();
 
    }
 
    function testAddFeed() public{
     vm.startPrank(tester1);
     vm.deal(tester1, 1000 ether);
-    asset.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
+    // asset.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
     vm.stopPrank();
 
    }
 
 
-//    function testStageAsset() public{
-//     vm.startPrank(assetowner);
-//     vm.deal(assetowner, 1000 ether);
-//     asset.stageAsset("test", 1 ether, assetowner, address(nft), true, 0, 1);
-//     vm.stopPrank();
+function testStageAsset() public {
+    vm.startPrank(tester1);
+    vm.deal(tester1, 1000 ether);
 
-//    }
+    // Set tester account as an approved operator for the NFT contract
+    IERC721(address(nft)).setApprovalForAll(address(asset), true);
 
+    // Approve Assetbuyer contract to transfer NFT
+    IERC721(address(nft)).approve(address(asset), 1);
+
+    // Stage asset
+    asset.stageAsset("test", 1 ether, assetowner, address(nft), true, 0, 1);
+
+    vm.stopPrank();
+}
+
+function testgetAssetdetails() public {
+    testStageAsset();
+    vm.prank(tester1);
+    asset.getAssetDetails(1);
+}
 
     function mkaddr(string memory name) public returns (address) {
         address addr = address(

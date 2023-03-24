@@ -22,9 +22,10 @@ event AssetStaged(address _owner, string category);
         uint256 _nftId
     ) internal {
         AssetData storage assetData = AssetSlot();
+        assetData.assetId++;
         uint256 assetId = assetData.assetId;
         string memory newcategory;
-        if(!isNFT){
+        if(isNFT){
 
             newcategory = assetData.Assetdetail[assetId].AssetCategory;
             newcategory = "ERC721";
@@ -44,13 +45,13 @@ event AssetStaged(address _owner, string category);
             nftId: _nftId,
             isNFT: isNFT
         });
-        if (!isNFT){
+        if (isNFT){
            IERC721(assetAddress).approve(address(this), _nftId);
 
         }else{
             IERC20(assetAddress).approve(address(this), erc20value);
         }
-        assetData.assetId++;
+        
 
         emit AssetStaged(msg.sender, newcategory);
     }
