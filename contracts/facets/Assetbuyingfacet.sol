@@ -8,7 +8,7 @@ import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.
 
 contract AssetFacet {
     constructor() {
-        // Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
+        Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
         }
     function stageAsset(
         string memory assetName,
