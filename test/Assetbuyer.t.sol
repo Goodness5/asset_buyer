@@ -34,11 +34,8 @@ contract AssetbuyerTest is Test {
 function testStageAsset() public {
     vm.startPrank(tester1);
     vm.deal(tester1, 1000 ether);
-    // Set tester account as an approved operator for the NFT contract
     IERC721(address(nft)).setApprovalForAll(address(asset), true);
-    // Approve Assetbuyer contract to transfer NFT
     IERC721(address(nft)).approve(address(asset), 1);
-    // Stage asset
     asset.stageAsset("test", 1 ether, assetowner, address(nft), true, 0, 1);
 
     vm.stopPrank();
