@@ -14,8 +14,9 @@ contract AssetbuyerTest is Test {
         address tester1 = mkaddr("tester1");
         address assetowner = mkaddr("assetowner");
    function setUp() public {
-        asset = new AssetFacet();
         vm.startPrank(tester1);
+        asset = new AssetFacet();
+        // asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c), 0xdAC17F958D2ee523a2206206994597C13D831ec7);
         nft = new NFT();
         vm.stopPrank();
 
@@ -24,8 +25,8 @@ contract AssetbuyerTest is Test {
    function testAddFeed() public{
     vm.deal(tester1, 1000 ether);
     vm.startPrank(tester1);
-    asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c));
-    asset.getprice("link");
+    // asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d94d9127c), 0xdAC17F950D2ee523a2206206994597C13D831ec7);
+    asset.getprice("usdt");
     vm.stopPrank();
    }
 

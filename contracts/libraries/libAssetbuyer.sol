@@ -63,17 +63,18 @@ event AssetStaged(address _owner, string category);
         IERC20 paymentTokenadd = IERC20(assetData.paymentmethod[paymentToken].paymentTokenAddress);
         uint256 balance = paymentTokenadd.balanceOf(msg.sender);
         require(balance >= uint256(price), "Insufficient balance");
-        paymentTokenadd.approve(address(this), uint256(price));
-        paymentTokenadd.transferFrom(msg.sender, address(this), uint256(price));
        address assetaddress =  assetData.Assetdetail[_assetid].AssetAddress;
        address assetowner =  assetData.Assetdetail[_assetid].Assetowner;
+        paymentTokenadd.approve(address(this), uint256(price));
        uint nftid =  assetData.Assetdetail[_assetid].nftId;
         if ((assetData.Assetdetail[_assetid].isNFT)==false) {
-           IERC20(assetaddress).transferFrom(assetowner, msg.sender, uint256(price));
+           bool success = IERC20(assetaddress).transferFrom(assetowner, msg.sender, uint256(price));
+           require(success, "asset unavailable try again");
         }
         else{
            IERC721(assetaddress).transferFrom(assetowner, msg.sender, nftid);
         }
+        paymentTokenadd.transferFrom(msg.sender, address(this), uint256(price));
         assetData.Assetdetail[_assetid].Assetpurchased = true;
         assetData.Assetdetail[_assetid].buyer = msg.sender;
         emit AssetPurchased(msg.sender, price);

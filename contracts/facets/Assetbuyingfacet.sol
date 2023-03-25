@@ -2,13 +2,14 @@
 pragma solidity ^0.8.17;
 
 import {libAssetbuyer} from "../libraries/libAssetbuyer.sol";
+import "../libraries/LibDiamond.sol";
 import {Assetpricing} from "../libraries/libAssetpricing.sol";
 import {OwnershipFacet} from "./OwnershipFacet.sol";
 import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract AssetFacet {
     constructor() {
-        Assetpricing.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
+        Assetpricing.addpricefeeed("usdt", 0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c, 0xdAC17F958D2ee523a2206206994597C13D831ec7);
         }
     function stageAsset(
         string memory assetName,
@@ -36,13 +37,15 @@ contract AssetFacet {
         libAssetbuyer.isAssetPurchased(assetId);
     }
 
-    function addpricefeeed(string memory paymentname, address pricefeedAdddess)  external returns(int price){
-        Assetpricing.addpricefeeed(paymentname, pricefeedAdddess);
+    function addpricefeeed(string memory paymentname, address pricefeedAdddess, address tokenaddr)  external returns(int price){
+        // LibDiamond.enforceIsContractOwner();
+        Assetpricing.addpricefeeed(paymentname, pricefeedAdddess, tokenaddr);
         return price;
         
     }
     function getprice(string memory paymentname) external view returns(int price){
         Assetpricing.getprice(paymentname);
+        return price;
     }
 
     function priceInUsersToken(string memory _tokenName, uint256 assetId) external view{
@@ -50,14 +53,17 @@ contract AssetFacet {
         
     }
      function withdrawERC20token(address _tokenaddress) external{
+        LibDiamond.enforceIsContractOwner();
         libAssetbuyer.withdrawERC20token(_tokenaddress);
         
     }
      function withdrawERC721token(address _tokenaddress, uint _tokenid) external {
+        LibDiamond.enforceIsContractOwner();
         libAssetbuyer.withdrawERC721token(_tokenaddress, _tokenid);
         
     }
      function withdraweth(uint _tokenid) external {
+        LibDiamond.enforceIsContractOwner();
         libAssetbuyer.withdraweth(_tokenid);
         
     }

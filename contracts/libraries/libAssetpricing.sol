@@ -12,7 +12,7 @@ library Assetpricing {
     
 
 
-    function addpricefeeed(string memory paymentname, address pricefeedAdddess) internal returns (int price){
+    function addpricefeeed(string memory paymentname, address pricefeedAdddess, address _paymentTokenAddress) internal returns (int price){
         AssetData storage ds = AssetSlot();
 
         ds.paymentmethods.push(paymentname);
@@ -22,6 +22,7 @@ library Assetpricing {
 
         // token price in usd
         ds.paymentmethod[paymentname].price = Price;
+        ds.paymentmethod[paymentname].paymentTokenAddress = _paymentTokenAddress;
         price = Price;
 
     }
