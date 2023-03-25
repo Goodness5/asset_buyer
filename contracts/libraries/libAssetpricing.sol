@@ -12,15 +12,17 @@ library Assetpricing {
     
 
 
-    function addpricefeeed(string memory paymentname, AggregatorV3Interface pricefeedAdddess) internal {
+    function addpricefeeed(string memory paymentname, address pricefeedAdddess) internal returns (int price){
         AssetData storage ds = AssetSlot();
 
         ds.paymentmethods.push(paymentname);
         ds.paymentmethod[paymentname].paymentTokenfeed = pricefeedAdddess;
        AggregatorV3Interface pricefeed = AggregatorV3Interface(pricefeedAdddess);
-        (, int Price, , , ) = getLatestPrice(pricefeed);
+        int Price = getLatestPrice(pricefeed);
+
         // token price in usd
-        Price = ds.paymentmethod[paymentname].price;
+        ds.paymentmethod[paymentname].price = Price;
+        price = Price;
 
     }
    function getprice(string memory _paymentname) internal view returns (int _price) {
@@ -40,20 +42,20 @@ library Assetpricing {
 
 
        function calcPriceInToken(string memory _tokenName, uint256 assetId) view internal returns(int amountToPay){
-    AssetData storage ds = AssetSlot();
+            AssetData storage ds = AssetSlot();
 
-    int paymentPriceInUsd = getprice(_tokenName);
-    // gets eth price in usd
-    AggregatorV3Interface ethpricefeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
-    (, int ethPrice, , , ) = getLatestPrice(ethpricefeed);
-    int256 assetPriceInUsd = int256(ethPrice) * int256(ds.Assetdetail[assetId].AssetPrice);
-    //get the price in usd of the token user wants to pay
+            int paymentPriceInUsd = getprice(_tokenName);
+            // gets eth price in usd
+            AggregatorV3Interface ethpricefeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+            int ethPrice = getLatestPrice(ethpricefeed);
+            int256 assetPriceInUsd = int256(ethPrice) * int256(ds.Assetdetail[assetId].AssetPrice);
+            //get the price in usd of the token user wants to pay
 
-    address paymentTokenAddress = ds.paymentmethod[_tokenName].paymentTokenAddress;
-    uint8 paymentTokenDecimals = IERC20Metadata(paymentTokenAddress).decimals();
-    int256 assetPriceInPaymentToken = (assetPriceInUsd * int256(10 ** paymentTokenDecimals)) / int256(paymentPriceInUsd);
-    int256 paymentAmount = assetPriceInPaymentToken * paymentPriceInUsd /int256( 10 ** paymentTokenDecimals);
-    amountToPay = paymentAmount;
+            address paymentTokenAddress = ds.paymentmethod[_tokenName].paymentTokenAddress;
+            uint8 paymentTokenDecimals = IERC20Metadata(paymentTokenAddress).decimals();
+            int256 assetPriceInPaymentToken = (assetPriceInUsd * int256(10 ** paymentTokenDecimals)) / int256(paymentPriceInUsd);
+            int256 paymentAmount = assetPriceInPaymentToken * paymentPriceInUsd /int256( 10 ** paymentTokenDecimals);
+            amountToPay = paymentAmount;
 
 }
 
@@ -61,10 +63,10 @@ library Assetpricing {
      
 
 
-    function getLatestPrice (AggregatorV3Interface pricefeed) internal view returns (uint80 roundID, int price,
-        uint  startedAt,uint timeStamp,uint80 answeredInRound) {
-        (roundID, price,startedAt,timeStamp,answeredInRound) = pricefeed.latestRoundData();
-    } 
+   function getLatestPrice(AggregatorV3Interface priceFeed) internal view returns (int) {
+        ( , int price, , , ) = priceFeed.latestRoundData();
+        return price;
+    }
 
      function AssetSlot() internal pure returns(AssetData storage ds) {
         assembly {

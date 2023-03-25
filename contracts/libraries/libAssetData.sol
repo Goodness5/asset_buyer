@@ -15,7 +15,7 @@ struct Assetdetails {
     bool isNFT;
 }
 struct payment {
-    AggregatorV3Interface paymentTokenfeed;
+    address paymentTokenfeed;
     int price;
     address paymentTokenAddress;
 

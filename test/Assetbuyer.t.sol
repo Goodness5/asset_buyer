@@ -8,13 +8,13 @@ import "../contracts/facets/Assetbuyingfacet.sol";
 import "../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract AssetbuyerTest is Test {
-        AssetFacet public asset;
-        NFT public nft;
+        AssetFacet  asset;
+        NFT nft;
 
         address tester1 = mkaddr("tester1");
         address assetowner = mkaddr("assetowner");
    function setUp() public {
-        asset = new ASSET();
+        asset = new AssetFacet();
         vm.startPrank(tester1);
         nft = new NFT();
         vm.stopPrank();
@@ -22,11 +22,11 @@ contract AssetbuyerTest is Test {
    }
 
    function testAddFeed() public{
-    vm.startPrank(tester1);
     vm.deal(tester1, 1000 ether);
-    // asset.addpricefeeed("usdt", AggregatorV3Interface(0x3E7d1eAB13ad0104d2750B8863b489D65364e32D));
+    vm.startPrank(tester1);
+    asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c));
+    asset.getprice("link");
     vm.stopPrank();
-
    }
 
 
