@@ -25,6 +25,7 @@ contract AssetbuyerTest is Test {
    function testAddFeed() public{
     vm.deal(tester1, 1000 ether);
     vm.startPrank(tester1);
+    // private_key=3e02574ec6549bd6169004daca64b2251fe0556e3472be39b609b758e1c39d69
     // asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d94d9127c), 0xdAC17F950D2ee523a2206206994597C13D831ec7);
     asset.getprice("usdt");
     vm.stopPrank();
