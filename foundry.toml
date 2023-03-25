@@ -9,4 +9,7 @@ verbosity=5
 [rpc_endpoints]
 mainnet = "${rpc}"
 
+[etherscan]
+goerli = { key = "${ETHERSCAN_API_KEY}" }
+
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config
