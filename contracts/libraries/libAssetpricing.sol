@@ -47,7 +47,7 @@ library Assetpricing {
 
             int paymentPriceInUsd = getprice(_tokenName);
             // gets eth price in usd
-            AggregatorV3Interface ethpricefeed = AggregatorV3Interface(0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419);
+            AggregatorV3Interface ethpricefeed = AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306);
             int ethPrice = getLatestPrice(ethpricefeed);
             int256 assetPriceInUsd = int256(ethPrice) * int256(ds.Assetdetail[assetId].AssetPrice);
             //get the price in usd of the token user wants to pay

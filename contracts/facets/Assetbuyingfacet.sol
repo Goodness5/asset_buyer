@@ -6,10 +6,12 @@ import "../libraries/LibDiamond.sol";
 import {Assetpricing} from "../libraries/libAssetpricing.sol";
 import {OwnershipFacet} from "./OwnershipFacet.sol";
 import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "../libraries/libAssetData.sol";
 
-contract AssetFacet {
+contract Assetbuyingfacet {
+
     constructor() {
-        Assetpricing.addpricefeeed("usdt", 0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c, 0xdAC17F958D2ee523a2206206994597C13D831ec7);
+        Assetpricing.addpricefeeed("usdc", 0xA2F78ab2355fe2f984D808B5CeE7FD0A93D5270E, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
         }
     function stageAsset(
         string memory assetName,

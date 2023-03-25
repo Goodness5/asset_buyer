@@ -88,7 +88,7 @@ event AssetStaged(address _owner, string category);
         return assetData.Assetdetail[assetId];
     }
 
-  function isAssetPurchased(uint256 assetId) public view returns (bool) {
+  function isAssetPurchased(uint256 assetId) internal view returns (bool) {
         AssetData storage assetData = AssetSlot();
         require(assetData.Assetdetail[assetId].AssetAddress != address(0), "Asset does not exist");
         return assetData.Assetdetail[assetId].Assetpurchased;

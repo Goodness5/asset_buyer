@@ -8,14 +8,14 @@ import "../contracts/facets/Assetbuyingfacet.sol";
 import "../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 contract AssetbuyerTest is Test {
-        AssetFacet  asset;
+        Assetbuyingfacet  asset;
         NFT nft;
 
         address tester1 = mkaddr("tester1");
         address assetowner = mkaddr("assetowner");
    function setUp() public {
         vm.startPrank(tester1);
-        asset = new AssetFacet();
+        asset = new Assetbuyingfacet();
         // asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c), 0xdAC17F958D2ee523a2206206994597C13D831ec7);
         nft = new NFT();
         vm.stopPrank();
@@ -25,9 +25,8 @@ contract AssetbuyerTest is Test {
    function testAddFeed() public{
     vm.deal(tester1, 1000 ether);
     vm.startPrank(tester1);
-    // private_key=3e02574ec6549bd6169004daca64b2251fe0556e3472be39b609b758e1c39d69
     // asset.addpricefeeed("link", (0x2c1d072e956AFFC0D435Cb7AC38EF18d94d9127c), 0xdAC17F950D2ee523a2206206994597C13D831ec7);
-    asset.getprice("usdt");
+    asset.getprice("usdc");
     vm.stopPrank();
    }
 
@@ -35,13 +34,10 @@ contract AssetbuyerTest is Test {
 function testStageAsset() public {
     vm.startPrank(tester1);
     vm.deal(tester1, 1000 ether);
-
     // Set tester account as an approved operator for the NFT contract
     IERC721(address(nft)).setApprovalForAll(address(asset), true);
-
     // Approve Assetbuyer contract to transfer NFT
     IERC721(address(nft)).approve(address(asset), 1);
-
     // Stage asset
     asset.stageAsset("test", 1 ether, assetowner, address(nft), true, 0, 1);
 
