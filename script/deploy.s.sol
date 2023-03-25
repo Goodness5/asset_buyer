@@ -20,6 +20,8 @@ contract DiamondDeployer is Script, IDiamondCut {
 
    address deployer =  0xE6e2595f5f910c8A6c4cf42267Ca350c6BA8c054;
     function run() public {
+        uint256 key = vm.envUint("private_key");
+        vm.startBroadcast(key);
         //deploy facets
         dCutFacet = new DiamondCutFacet();
         diamond = new Diamond(deployer, address(dCutFacet));
@@ -48,8 +50,7 @@ contract DiamondDeployer is Script, IDiamondCut {
             })
         );
 
-        uint256 key = vm.envUint("private_key");
-        vm.startBroadcast(key);
+        
         IDiamondCut(address(diamond)).diamondCut(cut, address(0x0), "");
         DiamondLoupeFacet(address(diamond)).facetAddresses();
          vm.stopBroadcast();

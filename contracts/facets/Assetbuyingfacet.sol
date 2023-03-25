@@ -2,6 +2,14 @@
 pragma solidity ^0.8.17;
 
 import {libAssetbuyer} from "../libraries/libAssetbuyer.sol";
+
+import { AssetData, Assetdetails } from "../libraries/libAssetData.sol";
+import "../libraries/libAssetpricing.sol";
+import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol/";
+import "../../lib/openzeppelin-contracts/contracts/token/ERC721/IERC721.sol/";
+
 import "../libraries/LibDiamond.sol";
 import {Assetpricing} from "../libraries/libAssetpricing.sol";
 import {OwnershipFacet} from "./OwnershipFacet.sol";
@@ -9,6 +17,7 @@ import "../../lib/chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.
 import "../libraries/libAssetData.sol";
 
 contract Assetbuyingfacet {
+    AssetData  ds;
 
     constructor() {
         Assetpricing.addpricefeeed("usdc", 0xA2F78ab2355fe2f984D808B5CeE7FD0A93D5270E, 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48);
